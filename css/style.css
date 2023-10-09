@@ -91,12 +91,13 @@ h1 {
 }
 
 .calculator {
-  background-color: dimgray;
+  background-color: #3b3b3b;
   width: var(--calc-body-width);
   height: calc(var(--calc-body-width) / 0.7);
   border-radius: 5%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 .calculator-display {
@@ -107,8 +108,17 @@ h1 {
 
 .calculator-buttons {
   width: calc(var(--calc-body-width) * 0.9);
-  height: calc(var(--calc-body-width) * 0.9);
-  background-color: darkslategray;
+  height: calc(var(--calc-body-width) * 1.1);
+  background-color: #595959;
+}
+
+button {
+  background-color: #474747;
+  color: white;
+  width: calc(var(--calc-body-width) * 0.2);
+  height: calc(var(--calc-body-width) * 0.2);
+  border: solid #474747;
+  border-radius: 50%;
 }
 
 footer {
