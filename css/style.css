@@ -107,6 +107,15 @@ h1 {
   background-color: #244f0e;
   margin-top: 1.2rem;
   border-radius: 1rem;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.display {
+  font-size: 3.5rem;
+  text-align: right;
+  margin-right: 0.5rem;
 }
 
 .calculator-buttons {
