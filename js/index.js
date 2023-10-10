@@ -92,7 +92,7 @@ divideButton.addEventListener("click", () => {
   ) {
     calculate();
     calculator.operator = "\u{00F7}";
-    setDisplay(`${display.textContent} /`);
+    setDisplay(`${display.textContent} \u{00F7}`);
   } else if (
     calculator.firstNum !== "" &&
     calculator.operator !== "" &&
