@@ -106,17 +106,20 @@ divideButton.addEventListener("click", () => {
   }
 });
 
-// decimalButton.addEventListener("click", () => {
-//   if (calculator.firstNum !== "" && !calculator.secondNum.includes(".")) {
-//     calculator.secondNum += ".";
-//     setDisplay(
-//       `${calculator.firstNum} ${calculator.operator} ${calculator.secondNum}`
-//     );
-//   } else if (calculator.firstNum !== "" && !calculator.firstNum.includes(".")) {
-//     calculator.firstNum += ".";
-//     setDisplay(`${calculator.firstNum}`);
-//   }
-// });
+decimalButton.addEventListener("click", () => {
+  if (calculator.firstNum !== "" && !calculator.firstNum.includes(".")) {
+    calculator.firstNum += ".";
+    setDisplay(`${calculator.firstNum}`);
+  } else if (
+    calculator.secondNum !== "" &&
+    !calculator.secondNum.includes(".")
+  ) {
+    calculator.secondNum += ".";
+    setDisplay(
+      `${calculator.firstNum} ${calculator.operator} ${calculator.secondNum}`
+    );
+  }
+});
 
 backspaceButton.addEventListener("click", () => {
   if (
@@ -160,7 +163,9 @@ for (let i = 0; i < numberButtons.length; i++) {
       setDisplay(`${calculator.firstNum}`);
     } else {
       calculator.secondNum += numberButtons[i].textContent;
-      setDisplay(`${display.textContent} ${calculator.secondNum}`);
+      setDisplay(
+        `${calculator.firstNum} ${calculator.operator} ${calculator.secondNum}`
+      );
     }
   });
 }
@@ -195,6 +200,10 @@ function clearAll() {
   calculator.operator = "";
   setDisplay("");
   calculated = false;
+}
+
+function isFloat(number) {
+  return Number(number) === number && number % 1 !== 0;
 }
 
 function setDisplay(string) {
