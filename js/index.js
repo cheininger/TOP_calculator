@@ -19,33 +19,112 @@ const clearAllButton = document.querySelector("button.clear-all");
 const display = document.querySelector(".display");
 
 addButton.addEventListener("click", () => {
-  calculator.operator = "+";
-  setDisplay(calculator.operator);
+  if (
+    calculator.firstNum !== "" &&
+    calculator.secondNum !== "" &&
+    calculator.operator !== ""
+  ) {
+    calculate();
+    calculator.operator = "+";
+    setDisplay(`${display.textContent} +`);
+  } else if (
+    calculator.firstNum !== "" &&
+    calculator.operator !== "" &&
+    calculator.secondNum === ""
+  ) {
+    calculator.operator = "+";
+    setDisplay(`${calculator.firstNum} ${calculator.operator}`);
+  } else {
+    calculator.operator = "+";
+    setDisplay(`${display.textContent} ${calculator.operator}`);
+  }
 });
+
 subtractButton.addEventListener("click", () => {
-  calculator.operator = "-";
-  setDisplay(calculator.operator);
+  if (
+    calculator.firstNum !== "" &&
+    calculator.secondNum !== "" &&
+    calculator.operator !== ""
+  ) {
+    calculate();
+    calculator.operator = "-";
+    setDisplay(`${display.textContent} -`);
+  } else if (
+    calculator.firstNum !== "" &&
+    calculator.operator !== "" &&
+    calculator.secondNum === ""
+  ) {
+    calculator.operator = "-";
+    setDisplay(`${calculator.firstNum} ${calculator.operator}`);
+  } else {
+    calculator.operator = "-";
+    setDisplay(`${display.textContent} ${calculator.operator}`);
+  }
 });
+
 multiplyButton.addEventListener("click", () => {
-  calculator.operator = "*";
-  setDisplay(calculator.operator);
+  if (
+    calculator.firstNum !== "" &&
+    calculator.secondNum !== "" &&
+    calculator.operator !== ""
+  ) {
+    calculate();
+    calculator.operator = "x";
+    setDisplay(`${display.textContent} x`);
+  } else if (
+    calculator.firstNum !== "" &&
+    calculator.operator !== "" &&
+    calculator.secondNum === ""
+  ) {
+    calculator.operator = "x";
+    setDisplay(`${calculator.firstNum} ${calculator.operator}`);
+  } else {
+    calculator.operator = "x";
+    setDisplay(`${display.textContent} ${calculator.operator}`);
+  }
 });
+
 divideButton.addEventListener("click", () => {
-  calculator.operator = "/";
-  setDisplay(calculator.operator);
+  if (
+    calculator.firstNum !== "" &&
+    calculator.secondNum !== "" &&
+    calculator.operator !== ""
+  ) {
+    calculate();
+    calculator.operator = "/";
+    setDisplay(`${display.textContent} /`);
+  } else if (
+    calculator.firstNum !== "" &&
+    calculator.operator !== "" &&
+    calculator.secondNum === ""
+  ) {
+    calculator.operator = "/";
+    setDisplay(`${calculator.firstNum} ${calculator.operator}`);
+  } else {
+    calculator.operator = "/";
+    setDisplay(`${display.textContent} ${calculator.operator}`);
+  }
 });
 
 clearButton.addEventListener("click", () => {
-  if (calculator.operator === "") {
-    let string = calculator.firstNum;
-    let newString = string.substr(1, string.length - 1);
-    calculator.firstNum = newString;
-    setDisplay(newString);
+  // fix issue where firstNum, secondNum AND operator are set
+  if (calculated === true) {
+    clearAll();
   } else {
-    let string = calculator.secondNum;
-    let newString = string.substr(1, string.length - 1);
-    calculator.secondNum = newString;
-    setDisplay(newString);
+    if (calculator.operator === "") {
+      let string = calculator.firstNum;
+      let newString = string.slice(0, string.length - 1);
+      calculator.firstNum = newString;
+      setDisplay(newString);
+    } else if (calculator.operator !== "" && calculator.secondNum === "") {
+      calculator.operator = "";
+      setDisplay("");
+    } else {
+      let string = calculator.secondNum;
+      let newString = string.slice(0, string.length - 1);
+      calculator.secondNum = newString;
+      setDisplay(newString);
+    }
   }
 });
 
@@ -60,18 +139,20 @@ for (let i = 0; i < numberButtons.length; i++) {
       setDisplay(calculator.firstNum);
     } else {
       calculator.secondNum += numberButtons[i].textContent;
-      setDisplay(calculator.secondNum);
+      setDisplay(`${display.textContent} ${calculator.secondNum}`);
     }
   });
 }
 
 equalsButton.addEventListener("click", () => {
-  if (calculator.firstNum === "") {
-    let result = "0";
-
-    setDisplay(result);
+  if (calculator.operator !== "" && calculator.secondNum !== "") {
+    calculate();
+  } else {
+    setDisplay(calculator.firstNum);
   }
+});
 
+function calculate() {
   result = operate(
     Number(calculator.firstNum),
     Number(calculator.secondNum),
@@ -79,13 +160,20 @@ equalsButton.addEventListener("click", () => {
   );
 
   setDisplay(result);
-});
+
+  calculator.firstNum = result;
+  calculator.secondNum = "";
+  calculator.operator = "";
+
+  calculated = true;
+}
 
 function clearAll() {
   calculator.firstNum = "";
   calculator.secondNum = "";
   calculator.operator = "";
   setDisplay("");
+  calculated = false;
 }
 
 function setDisplay(string) {
@@ -105,7 +193,11 @@ function multiply(firstNum, secondNum) {
 }
 
 function divide(firstNum, secondNum) {
-  return firstNum / secondNum;
+  if (secondNum === 0) {
+    return "Please don't try to explode the universe...";
+  } else {
+    return firstNum / secondNum;
+  }
 }
 
 function operate(firstNum, secondNum, operator) {
@@ -113,7 +205,7 @@ function operate(firstNum, secondNum, operator) {
     return `${add(firstNum, secondNum)}`;
   } else if (operator === "-") {
     return `${subtract(firstNum, secondNum)}`;
-  } else if (operator === "*") {
+  } else if (operator === "x") {
     return `${multiply(firstNum, secondNum)}`;
   } else if (operator === "/") {
     return `${divide(firstNum, secondNum)}`;
