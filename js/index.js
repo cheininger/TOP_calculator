@@ -1,6 +1,10 @@
-let firstInput = "";
-let secondInput = "";
-let operator = "";
+let calculator = {
+  firstNum: "",
+  secondNum: "",
+  operator: "",
+};
+
+let calculated = false;
 
 const addButton = document.querySelector("button.add");
 const subtractButton = document.querySelector("button.subtract");
@@ -15,67 +19,103 @@ const clearAllButton = document.querySelector("button.clear-all");
 const display = document.querySelector(".display");
 
 addButton.addEventListener("click", () => {
-  operator = "+";
-  setDisplay(operator);
+  calculator.operator = "+";
+  setDisplay(calculator.operator);
 });
 subtractButton.addEventListener("click", () => {
-  operator = "-";
-  setDisplay(operator);
+  calculator.operator = "-";
+  setDisplay(calculator.operator);
 });
 multiplyButton.addEventListener("click", () => {
-  operator = "*";
-  setDisplay(operator);
+  calculator.operator = "*";
+  setDisplay(calculator.operator);
 });
 divideButton.addEventListener("click", () => {
-  operator = "/";
-  setDisplay(operator);
+  calculator.operator = "/";
+  setDisplay(calculator.operator);
+});
+
+clearButton.addEventListener("click", () => {
+  if (calculator.operator === "") {
+    let string = calculator.firstNum;
+    let newString = string.substr(1, string.length - 1);
+    calculator.firstNum = newString;
+    setDisplay(newString);
+  } else {
+    let string = calculator.secondNum;
+    let newString = string.substr(1, string.length - 1);
+    calculator.secondNum = newString;
+    setDisplay(newString);
+  }
+});
+
+clearAllButton.addEventListener("click", () => {
+  clearAll();
 });
 
 for (let i = 0; i < numberButtons.length; i++) {
   numberButtons[i].addEventListener("click", () => {
-    if (operator === "") {
-      firstInput += numberButtons[i].textContent;
-      setDisplay(firstInput);
+    if (calculator.operator === "") {
+      calculator.firstNum += numberButtons[i].textContent;
+      setDisplay(calculator.firstNum);
     } else {
-      secondInput += numberButtons[i].textContent;
-      setDisplay(secondInput);
+      calculator.secondNum += numberButtons[i].textContent;
+      setDisplay(calculator.secondNum);
     }
   });
+}
+
+equalsButton.addEventListener("click", () => {
+  if (calculator.firstNum === "") {
+    let result = "0";
+
+    setDisplay(result);
+  }
+
+  result = operate(
+    Number(calculator.firstNum),
+    Number(calculator.secondNum),
+    calculator.operator
+  );
+
+  setDisplay(result);
+});
+
+function clearAll() {
+  calculator.firstNum = "";
+  calculator.secondNum = "";
+  calculator.operator = "";
+  setDisplay("");
 }
 
 function setDisplay(string) {
   display.textContent = string;
 }
 
-function add(firstNumber, secondNumber) {
-  return firstNumber + secondNumber;
+function add(firstNum, secondNum) {
+  return firstNum + secondNum;
 }
 
-function subtract(firstNumber, secondNumber) {
-  return firstNumber - secondNumber;
+function subtract(firstNum, secondNum) {
+  return firstNum - secondNum;
 }
 
-function multiply(firstNumber, secondNumber) {
-  return firstNumber * secondNumber;
+function multiply(firstNum, secondNum) {
+  return firstNum * secondNum;
 }
 
-function divide(firstNumber, secondNumber) {
-  return firstNumber / secondNumber;
+function divide(firstNum, secondNum) {
+  return firstNum / secondNum;
 }
 
-function operate(firstInput, secondInput, operator) {
-  switch (operator) {
-    case "+":
-      add(firstInput, secondInput);
-      break;
-    case "-":
-      subtract(firstInput, secondInput);
-      break;
-    case "*":
-      multiply(firstInput, secondInput);
-      break;
-    case "/":
-      divide(firstInput, secondInput);
-      break;
+function operate(firstNum, secondNum, operator) {
+  if (operator === "+") {
+    return `${add(firstNum, secondNum)}`;
+  } else if (operator === "-") {
+    return `${subtract(firstNum, secondNum)}`;
+  } else if (operator === "*") {
+    return `${multiply(firstNum, secondNum)}`;
+  } else if (operator === "/") {
+    return `${divide(firstNum, secondNum)}`;
   }
 }
