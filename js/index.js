@@ -14,7 +14,7 @@ const equalsButton = document.querySelector("button.equals");
 const decimalButton = document.querySelector("button.decimal");
 const percentButton = document.querySelector("button.percent");
 const numberButtons = document.querySelectorAll("button.number");
-const clearButton = document.querySelector("button.clear");
+const backspaceButton = document.querySelector("button.backspace");
 const clearAllButton = document.querySelector("button.clear-all");
 const display = document.querySelector(".display");
 
@@ -91,40 +91,61 @@ divideButton.addEventListener("click", () => {
     calculator.operator !== ""
   ) {
     calculate();
-    calculator.operator = "/";
+    calculator.operator = "\u{00F7}";
     setDisplay(`${display.textContent} /`);
   } else if (
     calculator.firstNum !== "" &&
     calculator.operator !== "" &&
     calculator.secondNum === ""
   ) {
-    calculator.operator = "/";
+    calculator.operator = "\u{00F7}";
     setDisplay(`${calculator.firstNum} ${calculator.operator}`);
   } else {
-    calculator.operator = "/";
+    calculator.operator = "\u{00F7}";
     setDisplay(`${display.textContent} ${calculator.operator}`);
   }
 });
 
-clearButton.addEventListener("click", () => {
-  // fix issue where firstNum, secondNum AND operator are set
-  if (calculated === true) {
-    clearAll();
-  } else {
-    if (calculator.operator === "") {
-      let string = calculator.firstNum;
-      let newString = string.slice(0, string.length - 1);
-      calculator.firstNum = newString;
-      setDisplay(newString);
-    } else if (calculator.operator !== "" && calculator.secondNum === "") {
-      calculator.operator = "";
-      setDisplay("");
-    } else {
-      let string = calculator.secondNum;
-      let newString = string.slice(0, string.length - 1);
-      calculator.secondNum = newString;
-      setDisplay(newString);
-    }
+// decimalButton.addEventListener("click", () => {
+//   if (calculator.firstNum !== "" && !calculator.secondNum.includes(".")) {
+//     calculator.secondNum += ".";
+//     setDisplay(
+//       `${calculator.firstNum} ${calculator.operator} ${calculator.secondNum}`
+//     );
+//   } else if (calculator.firstNum !== "" && !calculator.firstNum.includes(".")) {
+//     calculator.firstNum += ".";
+//     setDisplay(`${calculator.firstNum}`);
+//   }
+// });
+
+backspaceButton.addEventListener("click", () => {
+  if (
+    calculator.firstNum !== "" &&
+    calculator.secondNum !== "" &&
+    calculator.operator !== ""
+  ) {
+    let string = calculator.secondNum;
+    let newString = string.slice(0, string.length - 1);
+    calculator.secondNum = newString;
+    setDisplay(
+      `${calculator.firstNum} ${calculator.operator} ${calculator.secondNum}`
+    );
+  } else if (
+    calculator.firstNum !== "" &&
+    calculator.operator !== "" &&
+    calculator.secondNum === ""
+  ) {
+    calculator.operator = "";
+    setDisplay(`${calculator.firstNum}`);
+  } else if (
+    calculator.firstNum !== "" &&
+    calculator.operator === "" &&
+    calculator.secondNum === ""
+  ) {
+    let string = calculator.firstNum;
+    let newString = string.slice(0, string.length - 1);
+    calculator.firstNum = newString;
+    setDisplay(`${calculator.firstNum}`);
   }
 });
 
@@ -136,7 +157,7 @@ for (let i = 0; i < numberButtons.length; i++) {
   numberButtons[i].addEventListener("click", () => {
     if (calculator.operator === "") {
       calculator.firstNum += numberButtons[i].textContent;
-      setDisplay(calculator.firstNum);
+      setDisplay(`${calculator.firstNum}`);
     } else {
       calculator.secondNum += numberButtons[i].textContent;
       setDisplay(`${display.textContent} ${calculator.secondNum}`);
@@ -207,7 +228,7 @@ function operate(firstNum, secondNum, operator) {
     return `${subtract(firstNum, secondNum)}`;
   } else if (operator === "x") {
     return `${multiply(firstNum, secondNum)}`;
-  } else if (operator === "/") {
+  } else if (operator === "\u{00F7}") {
     return `${divide(firstNum, secondNum)}`;
   }
 }
